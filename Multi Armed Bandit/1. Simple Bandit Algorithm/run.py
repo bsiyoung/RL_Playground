@@ -31,15 +31,15 @@ def run() -> None:
     q = np.zeros(n_arm)  # Action values of current step
     q_hist = []  # History of action values
 
-    n_action = np.zeros(n_arm, dtype=np.int32)  # Numbers of each action performed
+    cnt_action = np.zeros(n_arm, dtype=np.int32)  # Count of how many each action performed
 
     avg_reward_hist = []  # History of average reward of last n_avg_step steps
     recent_rewards = list(np.zeros(n_avg_reward_step))  # Rewards of last n_avg_step steps
 
-    greedy_true_mean = []  # True mean of greedy action
+    greedy_true_q = []  # True action value of greedy action
 
     # Loop
-    for curr_step in range(n_step):
+    for curr_step in range(1, n_step + 1):
         # Select an action
         break_ties = np.random.random() < eps
         greedy_action = int(np.argmax(q))
@@ -50,7 +50,7 @@ def run() -> None:
 
         # Apply an action and receive a reward
         reward = mab.do_action(action)
-        n_action[action] += 1
+        cnt_action[action] += 1
 
         # Calculate average reward of last n_avg_step steps
         del recent_rewards[0]
@@ -58,16 +58,16 @@ def run() -> None:
         avg_reward_hist.append(np.average(recent_rewards))
 
         # Update action value
-        alpha = 1 / n_action[action]
+        alpha = 1 / cnt_action[action]
 
         q[action] = q[action] + alpha * (reward - q[action])
         q_hist.append(copy.deepcopy(q))  # Save history
 
-        # Save true mean reward of current step's greedy action
-        greedy_true_mean.append(mean[greedy_action])
+        # Save true action value of current step's greedy action
+        greedy_true_q.append(mean[greedy_action])
 
     do_plot(n_arm, n_step, n_avg_reward_step,
-            mean, avg_reward_hist, greedy_true_mean, q_hist,
+            mean, avg_reward_hist, greedy_true_q, q_hist,
             colors)
 
 
@@ -83,7 +83,7 @@ def print_actions_info(mean, std):
 
 
 def do_plot(n_arm, n_step, n_avg_step,
-            true_mean, avg_reward_hist, greedy_true_mean, q_hist,
+            true_q, avg_reward_hist, greedy_true_q, q_hist,
             colors):
     # plot1 (Average Of Received Rewards)
     # ======================================================================
@@ -93,9 +93,9 @@ def do_plot(n_arm, n_step, n_avg_step,
     plt.ylabel('Reward')
     plt.xlim(1, n_step)
     for action_no in range(n_arm):
-        plt.hlines(true_mean[action_no], xmin=1, xmax=n_step, colors=[colors[action_no]], linestyles='dashed', label='Action {} true action value'.format(action_no))
+        plt.hlines(true_q[action_no], xmin=1, xmax=n_step, colors=[colors[action_no]], linestyles='dashed', label='Action {} true action value'.format(action_no))
     plt.plot(np.arange(n_avg_step, n_step + 1), avg_reward_hist[n_avg_step-1:], color='#000000', label='average reward (recent {} steps)'.format(n_avg_step))
-    plt.plot(greedy_true_mean, color='#FF0000', label='greedy action true action value')
+    plt.plot(greedy_true_q, color='#FF0000', label='greedy action true action value')
     plt.legend()
     plt.savefig('plot1.png', bbox_inches='tight', pad_inches=0.3)
 
@@ -112,7 +112,7 @@ def do_plot(n_arm, n_step, n_avg_step,
     plt.ylabel('Action Value')
     plt.xlim(1, n_step)
     for action_no in range(n_arm):
-        plt.hlines(true_mean[action_no], xmin=1, xmax=n_step, colors=[colors[action_no]], linestyles='dashed', label='Action {} true action value'.format(action_no))
+        plt.hlines(true_q[action_no], xmin=1, xmax=n_step, colors=[colors[action_no]], linestyles='dashed', label='Action {} true action value'.format(action_no))
         plt.plot(q_hist[:, action_no], color=colors[action_no], label='Action {} approximated action value'.format(action_no))
     plt.legend()
     plt.savefig('plot2.png', bbox_inches='tight', pad_inches=0.3)
