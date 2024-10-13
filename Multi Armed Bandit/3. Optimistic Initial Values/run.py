@@ -13,14 +13,14 @@ np.random.seed(777)
 
 
 def run() -> None:
-    n_step = 18000
+    n_step = 100
     n_avg_reward_step = 70  # Number of steps to calculate average reward
 
     n_arm: int = 5  # Number of arms (actions)
     colors = ('#8DD3C7', '#FC8D62', '#8DA0CB', '#E78AC3', '#A6D854')  # Colors of each action for plotting graph
 
-    eps = 0.01  # Probability of breaking ties (Not choosing greedy action)
-    # alpha = 1.0  # A step size of action value update
+    eps = 0.05  # Probability of breaking ties (Not choosing greedy action)
+    # alpha = 0.1  # A step size of action value update
 
     # Create MAB environment
     mean = np.random.uniform(low=2, high=10, size=(n_arm))
@@ -28,7 +28,7 @@ def run() -> None:
     mab = MAB.Gaussian(n_arm=n_arm, mean=mean, std=std)
     print_actions_info(mean, std)
 
-    q = np.zeros(n_arm)  # Action values of current step
+    q = np.full((n_arm), 20.0, dtype=np.float64)  # Action values of current step
     q_hist = []  # History of action values
 
     cnt_action = np.zeros(n_arm, dtype=np.int32)  # Count of how many each action performed
