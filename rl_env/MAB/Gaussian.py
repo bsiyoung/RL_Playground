@@ -9,7 +9,7 @@ import numpy as np
 
 class Gaussian:
     """
-    Class provides stationary Gaussian MAB(Multi Armed Bandit) function
+    Class provides stationary Gaussian MAB(Multi Armed Bandit) environment
     """
     def __init__(
             self,
