@@ -26,12 +26,12 @@ LOOP n_step
 ```
 
 <p align="center">
-<img src="./1. Simple Bandit Algorithm/plot1_1500steps.png" width="800px">
+<img src="./1. Simple Bandit Algorithm/plot1_1500steps.png" width="800px"></br>
 Average of received rewards (1500 steps)
 </p>
 
 <p align="center">
-<img src="./1. Simple Bandit Algorithm/plot2_18000steps.png" width="800px">
+<img src="./1. Simple Bandit Algorithm/plot2_18000steps.png" width="800px"></br>
 Action values (18000 steps)
 </p>
 
@@ -39,12 +39,12 @@ Action values (18000 steps)
 
 Algorithm which perform well on non-stationary MAB problem. Because the α of the update rule is constant, this algorithm can adapt new environment better than using decaying α (Simple Bandit Algorithm).
 <p align="center">
-<img src="./2. Weighted Average/plot1_weighted_average.png" width="800px">
+<img src="./2. Weighted Average/plot1_weighted_average.png" width="800px"></br>
 Use weighted average (constant α)</br>It finds new greedy actions well
 </p>
 
 <p align="center">
-<img src="./2. Weighted Average/plot1_non_weighted_average.png" width="800px">
+<img src="./2. Weighted Average/plot1_non_weighted_average.png" width="800px"></br>
 Simple bandit algorithm (decaying α)</br>It cannot find greedy actions of new environments
 </p>
 
