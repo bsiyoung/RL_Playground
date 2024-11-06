@@ -42,6 +42,8 @@ def run():
     # Steps which will be plotted on figure
     step_list = np.logspace(10, 13, num=n_step, base=2, dtype=np.int32)
     print('Steps :', step_list, '\n')
+    # n_phase = 1
+    # n_step_per_phase = step_list[-1]
     
     # Dictionary contains optimum action percentage data
     optim_act_res = {}
@@ -81,6 +83,14 @@ def run():
         print_progress(st_tm, n_test, idx + 1)
     print('\n')
     optim_act_res['pure_ucb'] = copy.deepcopy(optim_act_res_buf)
+    
+    '''
+    Weighted Average Example (Use constant step size)
+    
+    agent = cuda_mab.CustomAgent(act_sel=cuda_mab.ActionSelection.EPSILON_GREEDY,
+                                 update_method=cuda_mab.UpdateMethod.WEIGHTED_AVERAGE,
+                                 init_q=0.0, eps=0.1, alpha=0.1)
+    '''
     
     # Plot figures
     # ===============================================================================================
